@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/models/todo.dart';
 import 'package:todo_list/widgets/todo_list_item.dart';
 
 class TodoListPage extends StatefulWidget {
@@ -11,7 +12,7 @@ class TodoListPage extends StatefulWidget {
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController();
 
-  List<String> todos = [];
+  List<Todo> todos = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +43,17 @@ class _TodoListPageState extends State<TodoListPage> {
                       onPressed: () {
                         String text = todoController.text;
                         setState(() {
-                          todos.add(text);
+                          Todo newTodo = Todo(
+                            title: text,
+                            dateTime: DateTime.now(),
+                          );
+                          todos.add(newTodo);
                         });
                         todoController.clear();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff00d7f3), //Colors.purple,
+                        backgroundColor: const Color(0xff00d7f3),
+                        //Colors.purple,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.all(14),
                       ),
@@ -65,9 +71,9 @@ class _TodoListPageState extends State<TodoListPage> {
                   child: ListView(
                     shrinkWrap: true,
                     children: [
-                      for (String todo in todos)
+                      for (Todo todo in todos)
                         TodoListItem(
-                          title: todo,
+                          todo: todo,
                         ),
                     ],
                   ),
@@ -88,7 +94,8 @@ class _TodoListPageState extends State<TodoListPage> {
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff00d7f3), //Colors.purple,
+                        backgroundColor: const Color(0xff00d7f3),
+                        //Colors.purple,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.all(14),
                       ),
