@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/models/todo.dart';
+import 'package:todo_list/repositories/todo_repository.dart';
 import 'package:todo_list/widgets/todo_list_item.dart';
 
 class TodoListPage extends StatefulWidget {
@@ -11,6 +12,7 @@ class TodoListPage extends StatefulWidget {
 
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController();
+  final TodoRepository todoRepository = TodoRepository();
 
   List<Todo> todos = [];
 
@@ -53,6 +55,7 @@ class _TodoListPageState extends State<TodoListPage> {
                           todos.add(newTodo);
                         });
                         todoController.clear();
+                        todoRepository.saveTodoList(todos);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff00d7f3),
@@ -126,26 +129,27 @@ class _TodoListPageState extends State<TodoListPage> {
     });
 
     ScaffoldMessenger.of(context).clearSnackBars();
-
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-        'Tarefa ${todo.title} foi removida com sucesso.',
-        style: const TextStyle(
-          color: Color(0xff060708),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Tarefa ${todo.title} foi removida com sucesso.',
+          style: const TextStyle(
+            color: Color(0xff060708),
+          ),
+        ),
+        duration: const Duration(seconds: 5),
+        backgroundColor: Colors.white,
+        action: SnackBarAction(
+          label: 'Desfazer',
+          textColor: const Color(0xff00d7f3),
+          onPressed: () {
+            setState(() {
+              todos.insert(deletedTodoPos!, deletedTodo!);
+            });
+          },
         ),
       ),
-      backgroundColor: Colors.white,
-      action: SnackBarAction(
-        label: 'Desfazer',
-        textColor: const Color(0xff00d7f3),
-        onPressed: () {
-          setState(() {
-            todos.insert(deletedTodoPos!, deletedTodo!);
-          });
-        },
-      ),
-      duration: const Duration(seconds: 5),
-    ));
+    );
   }
 
   void showDeleteTodosConfirmationDialog() {
@@ -153,13 +157,15 @@ class _TodoListPageState extends State<TodoListPage> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Limpar Tudo?'),
-        content: const Text('Você tem certeza que deseja apagar todas as tarefas?'),
+        content:
+            const Text('Você tem certeza que deseja apagar todas as tarefas?'),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            style: TextButton.styleFrom(foregroundColor: const Color(0xff00d7f3)),
+            style:
+                TextButton.styleFrom(foregroundColor: const Color(0xff00d7f3)),
             child: const Text('Cancelar'),
           ),
           TextButton(
