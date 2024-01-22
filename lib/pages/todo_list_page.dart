@@ -44,8 +44,7 @@ class _TodoListPageState extends State<TodoListPage> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 48),
                   child: Image(
-                    image: NetworkImage(
-                        'https://inovareti.eti.br/wp-content/uploads/2022/11/Projeto-Empresa-EX3-Oficial.png'),
+                    image: AssetImage('assets/images/logo.png'),
                   ),
                 ),
                 Container(
