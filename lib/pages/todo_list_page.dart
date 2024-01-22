@@ -41,10 +41,29 @@ class _TodoListPageState extends State<TodoListPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 48),
+                  child: Image(
+                    image: NetworkImage(
+                        'https://inovareti.eti.br/wp-content/uploads/2022/11/Projeto-Empresa-EX3-Oficial.png'),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  alignment: Alignment.topLeft,
+                  child: const Text(
+                    'Lista de Tarefas',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
                 Row(
                   children: [
                     Expanded(
                       child: TextField(
+                        textCapitalization: TextCapitalization.sentences,
                         controller: todoController,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
@@ -69,9 +88,10 @@ class _TodoListPageState extends State<TodoListPage> {
                     ElevatedButton(
                       onPressed: () {
                         String text = todoController.text;
-                        if(text.isEmpty) {
+                        if (text.isEmpty) {
                           setState(() {
-                            errorText = 'Você não especificou o nome da tarefa.';
+                            errorText =
+                                'Você não especificou o nome da tarefa.';
                           });
                           return;
                         }
@@ -121,7 +141,7 @@ class _TodoListPageState extends State<TodoListPage> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Você possui ${todos.length} tarefas pendentes.',
+                        'Você possui ${todos.length} na lista.',
                       ),
                     ),
                     const SizedBox(
